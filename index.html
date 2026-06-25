@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Asara Studio — Guest Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
+
+:root {
+  --charcoal: #1a1a1a;
+  --green: #535B44;
+  --sand: #d7c7b1;
+  --linen: #f5f2ee;
+  --linen-dark: #ede9e2;
+  --white: #ffffff;
+  --text: #2a2a2a;
+  --text-muted: #888;
+  --border: #e5ddd4;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--linen); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+.topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: var(--white); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 100; }
+.topbar-logo { height: 28px; cursor: pointer; display: block; }
+.topbar-logo img { height: 100%; width: auto; display: block; }
+.menu-btn { width: 40px; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; border: none; background: none; padding: 0; }
+.menu-btn span { display: block; width: 22px; height: 1.5px; background: var(--charcoal); transition: all 0.3s ease; }
+.menu-btn.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+.menu-btn.open span:nth-child(2) { opacity: 0; }
+.menu-btn.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+.sidemenu { position: fixed; top: 0; right: -100%; bottom: 0; width: 80%; max-width: 300px; background: var(--charcoal); z-index: 200; transition: right 0.35s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; overflow-y: auto; }
+.sidemenu.open { right: 0; }
+.sidemenu-header { padding: 24px 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-top: 56px; }
+.sidemenu-header-title { font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(215,199,177,0.6); margin-bottom: 4px; }
+.sidemenu-header-sub { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; }
+.sidemenu-nav { padding: 8px 0 40px; }
+.sidemenu-nav a { display: flex; align-items: center; gap: 14px; padding: 14px 24px; text-decoration: none; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 300; letter-spacing: 0.05em; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; cursor: pointer; }
+.sidemenu-nav a:active { background: rgba(255,255,255,0.05); }
+.sidemenu-nav a svg { width: 16px; height: 16px; stroke: var(--green); fill: none; stroke-width: 1.5; stroke-linecap: round; flex-shrink: 0; }
+.sidemenu-nav .priority-link { color: white; font-weight: 400; }
+.menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.35s; }
+.menu-overlay.open { opacity: 1; pointer-events: all; }
+
+.main { padding-top: 56px; }
+.screen { display: none; min-height: calc(100vh - 56px); }
+.screen.active { display: block; }
+
+.home-hero { background: var(--charcoal); padding: 32px 24px 36px; position: relative; }
+.home-hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 24px; background: var(--linen); border-radius: 24px 24px 0 0; }
+.home-eyebrow { font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(215,199,177,0.5); margin-bottom: 8px; }
+.home-title { font-size: 26px; font-weight: 300; letter-spacing: 0.06em; text-transform: uppercase; color: white; line-height: 1.2; }
+.home-welcome { padding: 28px 24px 0; }
+.welcome-note { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; line-height: 1.75; color: var(--charcoal); margin-bottom: 16px; }
+.welcome-sig { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+.welcome-sig-line { width: 20px; height: 1px; background: var(--green); flex-shrink: 0; }
+.welcome-sig-name { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--green); }
+
+.section-label { font-size: 8px; letter-spacing: 0.38em; text-transform: uppercase; color: var(--green); font-weight: 400; margin-bottom: 12px; }
+.priority-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.priority-card { background: var(--green); border-radius: 10px; padding: 16px 10px; cursor: pointer; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.priority-card:active { opacity: 0.8; }
+.priority-card svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.priority-card-name { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.85); text-align: center; font-weight: 400; line-height: 1.3; }
+
+.section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 40px; }
+.section-card { background: var(--white); border-radius: 10px; padding: 16px 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); }
+.section-card:active { background: var(--linen-dark); }
+.section-card svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 1.5; stroke-linecap: round; flex-shrink: 0; }
+.section-card-name { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); font-weight: 400; line-height: 1.3; }
+
+.screen-header { background: var(--charcoal); padding: 20px 24px 24px; position: relative; }
+.screen-header::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 20px; background: var(--linen); border-radius: 20px 20px 0 0; }
+.screen-eyebrow { font-size: 7px; letter-spacing: 0.45em; text-transform: uppercase; color: rgba(215,199,177,0.5); margin-bottom: 4px; }
+.screen-title { font-size: 22px; font-weight: 300; letter-spacing: 0.07em; text-transform: uppercase; color: white; line-height: 1.15; }
+.back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(215,199,177,0.6); cursor: pointer; border: none; background: none; padding: 0; margin-bottom: 14px; font-family: 'DM Sans', sans-serif; }
+.back-btn svg { width: 14px; height: 14px; stroke: rgba(215,199,177,0.6); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.screen-content { padding: 20px 24px 60px; }
+
+.info-block { background: var(--charcoal); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.info-block-green { background: var(--green); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.info-block .eyebrow, .info-block-green .eyebrow { font-size: 7px; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(215,199,177,0.6); margin-bottom: 6px; }
+.info-block .big, .info-block-green .big { font-size: 24px; font-weight: 300; letter-spacing: 0.04em; color: white; margin-bottom: 10px; }
+.info-block .detail, .info-block-green .detail { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+.wifi-block { background: var(--charcoal); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.wifi-label { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(215,199,177,0.5); margin-bottom: 4px; }
+.wifi-value { font-size: 20px; font-weight: 300; letter-spacing: 0.04em; color: white; margin-bottom: 16px; }
+.wifi-divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 16px; }
+
+.entry { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.entry:last-child { border-bottom: none; }
+.entry-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--sand); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--white); }
+.entry-icon-linen { background: var(--linen); }
+.entry-icon svg { width: 18px; height: 18px; stroke: var(--green); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.entry-body { flex: 1; min-width: 0; }
+.entry-name { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; color: var(--charcoal); margin-bottom: 4px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.entry-desc { font-size: 13px; font-weight: 300; color: #666; line-height: 1.65; }
+
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); border: 1px solid var(--green); border-radius: 20px; padding: 2px 8px; font-weight: 400; }
+.pill svg { width: 10px; height: 10px; stroke: var(--green); fill: none; stroke-width: 2; }
+
+.link-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.map-link, .web-link { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-weight: 400; }
+.map-link { background: var(--green); color: white; }
+.web-link { background: var(--linen-dark); color: var(--green); border: 1px solid var(--sand); }
+.map-link svg, .web-link svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+.map-link:active, .web-link:active { opacity: 0.7; }
+
+.amenity-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+.amenity-cell { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.amenity-cell svg { width: 22px; height: 22px; stroke: var(--green); fill: none; stroke-width: 1.4; stroke-linecap: round; }
+.amenity-name { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); font-weight: 400; text-align: center; line-height: 1.3; }
+
+.contacts-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.contacts-row:last-child { border-bottom: none; }
+.contacts-name { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); font-weight: 400; }
+.contacts-num { font-size: 15px; font-weight: 300; color: var(--green); letter-spacing: 0.03em; }
+.host-block { background: var(--linen-dark); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+.host-block-title { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+.host-block-sub { font-size: 13px; font-weight: 300; color: #555; line-height: 1.6; }
+
+.checklist { padding: 4px 0; }
+.checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 300; color: #444; line-height: 1.5; }
+.checklist-item:last-child { border-bottom: none; }
+.checklist-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 6px; }
+
+.star-row { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.star-row:last-child { border-bottom: none; }
+.stars { font-size: 16px; white-space: nowrap; }
+.star-filled { color: var(--green); }
+.star-empty { color: #ddd; }
+.star-desc { font-size: 13px; font-weight: 300; color: #555; }
+
+.review-link { display: block; text-align: center; background: var(--green); color: white; border-radius: 12px; padding: 16px; text-decoration: none; margin-bottom: 12px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400; }
+.review-link:active { opacity: 0.8; }
+
+.address-block { background: var(--linen-dark); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+.address-block-title { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.address-line { font-size: 14px; font-weight: 300; color: var(--charcoal); line-height: 1.7; margin-bottom: 2px; }
+
+.checkout-nav { display: block; text-align: center; border: 1px solid var(--green); color: var(--green); border-radius: 12px; padding: 14px; text-decoration: none; margin-top: 20px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 400; cursor: pointer; }
+
+.rule { height: 1px; background: var(--border); margin: 16px 0; }
+.section-sub { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin: 20px 0 4px; font-weight: 400; }
+.italic-note { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--charcoal); line-height: 1.75; margin-bottom: 16px; }
+
+.food-category { margin-bottom: 20px; }
+.food-cat-title { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.food-item { font-size: 13px; font-weight: 300; color: #444; line-height: 1.65; padding: 8px 0; border-bottom: 1px solid #f0ebe4; }
+.food-item:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo" onclick="showScreen('home')">
+    <img src="data:image/png;base64,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" alt="Asara Studio">
+  </div>
+  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+<div class="sidemenu" id="sidemenu">
+  <div class="sidemenu-header">
+    <div class="sidemenu-header-title">Guest Guide</div>
+    <div class="sidemenu-header-sub">Unit 215 · TENonV Apartments</div>
+  </div>
+  <nav class="sidemenu-nav">
+    <a onclick="showScreen('home');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Home</a>
+    <a class="priority-link" onclick="showScreen('checkin');toggleMenu()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Check-In</a>
+    <a class="priority-link" onclick="showScreen('checkout');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Checkout</a>
+    <a class="priority-link" onclick="showScreen('apartment');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M2 9V19M22 9V19M2 14H22M7 9V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg>Your Apartment</a>
+    <a class="priority-link" onclick="showScreen('wifi');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M5 12.5C7.5 10 10 8.5 12 8.5s4.5 1.5 7 4M8 16c1.1-1.1 2.5-1.8 4-1.8s2.9.7 4 1.8"/><circle cx="12" cy="19.5" r="1"/></svg>WiFi & Essentials</a>
+    <a onclick="showScreen('building');toggleMenu()"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="1"/><path d="M8 21V12h8v9M2 9h20"/></svg>The Building</a>
+    <a onclick="showScreen('rules');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>House Rules</a>
+    <a onclick="showScreen('explore');toggleMenu()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76l-6.36 2.12-2.12 6.36 6.36-2.12 2.12-6.36z"/></svg>Explore Cape Town</a>
+    <a onclick="showScreen('eat');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2M7 2v20M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>Eat & Drink</a>
+    <a onclick="showScreen('shopping');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>Shopping & Essentials</a>
+    <a onclick="showScreen('goodtoknow');toggleMenu()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Good to Know</a>
+    <a onclick="showScreen('emergency');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Emergency Contacts</a>
+    <a onclick="showScreen('review');toggleMenu()"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Leave a Review</a>
+  </nav>
+</div>
+
+<div class="main">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div class="home-eyebrow">TENonV · Unit 215</div>
+    <div class="home-title">Welcome to<br>Asara Studio</div>
+  </div>
+  <div class="home-welcome">
+    <div class="welcome-note">We hope you enjoy your stay in our boutique studio apartment, designed for comfort, calm and connection. You're perfectly placed in the heart of Cape Town — steps from the city's best restaurants, cafés and attractions.</div>
+    <div class="welcome-sig"><div class="welcome-sig-line"></div><div class="welcome-sig-name">Grizelda</div></div>
+    <div class="section-label">Quick Access</div>
+    <div class="priority-cards">
+      <a class="priority-card" onclick="showScreen('checkin')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><div class="priority-card-name">Check-In</div></a>
+      <a class="priority-card" onclick="showScreen('apartment')"><svg viewBox="0 0 24 24"><path d="M2 9V19M22 9V19M2 14H22M7 9V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg><div class="priority-card-name">Your Apartment</div></a>
+      <a class="priority-card" onclick="showScreen('wifi')"><svg viewBox="0 0 24 24"><path d="M5 12.5C7.5 10 10 8.5 12 8.5s4.5 1.5 7 4M8 16c1.1-1.1 2.5-1.8 4-1.8s2.9.7 4 1.8"/><circle cx="12" cy="19.5" r="1"/></svg><div class="priority-card-name">WiFi</div></a>
+    </div>
+    <div class="section-label">All Sections</div>
+    <div class="section-grid">
+      <a class="section-card" onclick="showScreen('checkin')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><div class="section-card-name">Check-In</div></a>
+      <a class="section-card" onclick="showScreen('checkout')"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg><div class="section-card-name">Checkout</div></a>
+      <a class="section-card" onclick="showScreen('apartment')"><svg viewBox="0 0 24 24"><path d="M2 9V19M22 9V19M2 14H22M7 9V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg><div class="section-card-name">Your Apartment</div></a>
+      <a class="section-card" onclick="showScreen('wifi')"><svg viewBox="0 0 24 24"><path d="M5 12.5C7.5 10 10 8.5 12 8.5s4.5 1.5 7 4M8 16c1.1-1.1 2.5-1.8 4-1.8s2.9.7 4 1.8"/><circle cx="12" cy="19.5" r="1"/></svg><div class="section-card-name">WiFi & Essentials</div></a>
+      <a class="section-card" onclick="showScreen('building')"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="1"/><path d="M8 21V12h8v9M2 9h20"/></svg><div class="section-card-name">The Building</div></a>
+      <a class="section-card" onclick="showScreen('rules')"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="section-card-name">House Rules</div></a>
+      <a class="section-card" onclick="showScreen('explore')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76l-6.36 2.12-2.12 6.36 6.36-2.12 2.12-6.36z"/></svg><div class="section-card-name">Explore Cape Town</div></a>
+      <a class="section-card" onclick="showScreen('eat')"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2M7 2v20M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg><div class="section-card-name">Eat & Drink</div></a>
+      <a class="section-card" onclick="showScreen('shopping')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg><div class="section-card-name">Shopping</div></a>
+      <a class="section-card" onclick="showScreen('goodtoknow')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div class="section-card-name">Good to Know</div></a>
+      <a class="section-card" onclick="showScreen('emergency')"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><div class="section-card-name">Emergency</div></a>
+      <a class="section-card" onclick="showScreen('review')"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div class="section-card-name">Leave a Review</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- CHECK-IN -->
+<div class="screen" id="screen-checkin">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Asara Studio</div>
+    <div class="screen-title">Check-In</div>
+  </div>
+  <div class="screen-content">
+    <div class="info-block">
+      <div class="eyebrow">Check-In From</div>
+      <div class="big">2:00 PM</div>
+      <div class="detail">Self check-in via lockbox. 24-hour security at the building entrance will assist with access.</div>
+    </div>
+
+    <div class="address-block">
+      <div class="address-block-title">Address</div>
+      <div class="address-line">10 Vredenburg Lane</div>
+      <div class="address-line">Cape Town City Centre</div>
+      <div class="address-line">Unit 215, TENonV Apartments</div>
+      <div class="link-row" style="margin-top:12px;">
+        <a class="map-link" href="https://maps.google.com/?q=10+Vredenburg+Lane+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Open in Maps</a>
+        <a class="web-link" href="https://www.parkopedia.co.za/parking/locations/10_vredenburg_lane_cape_town_western_cape_8001_south_africa_baffk3vngpc6ry8343/?country=za&arriving=202606251600&leaving=202606251800" target="_blank"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg>Find Parking</a>
+      </div>
+    </div>
+
+    <div class="section-sub">Step by Step</div>
+    <div class="checklist">
+      <div class="checklist-item"><div class="checklist-dot"></div>Enter through the main building entrance — security will assist you</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>The lifts require your key tag, which is inside the apartment. Take the stairs on your first trip up — directly opposite the lifts</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>If you have luggage, leave it at reception while you head up to collect your keys</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Head to Unit 215 on the 2nd floor</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>The lockbox is to the LEFT of the apartment door · Code: <strong>0215</strong></div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Retrieve your keys and key tag · close the lockbox · scramble the code · close the flap</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Your key tag is now with you — lifts are fully accessible for the rest of your stay</div>
+    </div>
+
+    <div class="rule"></div>
+    <div class="entry">
+      <div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <div class="entry-body"><div class="entry-name">Need Assistance?</div><div class="entry-desc">If you are unable to use the stairs for any reason, please message Grizelda via Airbnb or Booking.com before arrival and we will arrange assistance.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="screen" id="screen-checkout">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Asara Studio</div>
+    <div class="screen-title">Checkout</div>
+  </div>
+  <div class="screen-content">
+    <div class="info-block-green">
+      <div class="eyebrow">Checkout By</div>
+      <div class="big">10:00 AM</div>
+      <div class="detail">No bed stripping or cleaning needed — that's all taken care of.</div>
+    </div>
+    <div class="section-sub">One important step first</div>
+    <div class="entry">
+      <div class="entry-icon"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a2 2 0 014 0v2M12 12v4M10 14h4"/></svg></div>
+      <div class="entry-body"><div class="entry-name">Luggage First</div><div class="entry-desc">Bring all luggage downstairs before returning your keys. The lifts need your key tag. Leave bags at reception, then take the stairs up to Unit 215 one last time.</div></div>
+    </div>
+    <div class="entry">
+      <div class="entry-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>
+      <div class="entry-body"><div class="entry-name">Returning Your Keys</div><div class="entry-desc">Place keys in the lockbox · scramble the code · close the flap. The lockbox is to the LEFT of the apartment door.</div></div>
+    </div>
+    <div class="rule"></div>
+    <div class="section-sub">Before you leave</div>
+    <div class="checklist">
+      <div class="checklist-item"><div class="checklist-dot"></div>Close all windows and the balcony door</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Switch off lights and all appliances</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Lock the apartment door behind you</div>
+    </div>
+    <div class="rule"></div>
+    <div class="italic-note">Thank you for staying with us. It means more than you know. We hope Cape Town left you with good memories and that we'll have the pleasure of welcoming you back soon.</div>
+    <div class="welcome-sig" style="margin-bottom:24px;"><div class="welcome-sig-line"></div><div class="welcome-sig-name">Grizelda</div></div>
+    <a class="checkout-nav" onclick="showScreen('review')">Leave us a review →</a>
+  </div>
+</div>
+
+<!-- YOUR APARTMENT -->
+<div class="screen" id="screen-apartment">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Unit 215</div>
+    <div class="screen-title">Your Apartment</div>
+  </div>
+  <div class="screen-content">
+    <div class="amenity-grid">
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><path d="M2 9V19M22 9V19M2 14H22M7 9V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg><div class="amenity-name">Double Bed</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><div class="amenity-name">Smart TV · Netflix</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="2" rx="1"/><path d="M5 9v9M19 9v9"/></svg><div class="amenity-name">Workspace</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><div class="amenity-name">Nespresso</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/></svg><div class="amenity-name">Air Fryer & Microwave</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="2"/><path d="M5 6v14M19 6v14M3 20h18M9 6v8h6V6"/></svg><div class="amenity-name">Balcony</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 2v4M4 12c0 5 3 8 8 8s8-3 8-8"/></svg><div class="amenity-name">Rain Shower</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><path d="M4 19h16M4 19c0-6 4-10 10-10h6v10H4z"/><path d="M8 19v-4"/></svg><div class="amenity-name">Iron & Ironing Board</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><path d="M3 8c0-2.5 2-4 4-4h6c2 0 3.5 1.5 3.5 3.5S15 11 13 11H7C5 11 3 9.5 3 8z"/><path d="M7 11v5c0 1 .5 1.5 1.5 1.5S10 17 10 16v-5"/><path d="M18 7h2M18 8.5h2.5M18 10h2"/></svg><div class="amenity-name">Hair Dryer</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg><div class="amenity-name">Safe</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="8" y="6" width="5" height="13" rx="1.5"/><path d="M9 6V4.5A.5.5 0 019.5 4h3a.5.5 0 01.5.5V6"/><rect x="15" y="8" width="4" height="11" rx="1"/><rect x="3" y="10" width="4" height="9" rx="1"/></svg><div class="amenity-name">Basic Toiletries</div></div>
+      <div class="amenity-cell"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="1.5" rx="0.5"/><path d="M4 4.5v15c0 .5.3.8.7 1L12 18l7.3 2.5c.4-.2.7-.5.7-1V4.5M12 4.5v13.5"/></svg><div class="amenity-name">Blackout Curtains</div></div>
+    </div>
+    <div class="rule"></div>
+    <div class="section-sub">Good to know</div>
+    <div class="checklist">
+      <div class="checklist-item"><div class="checklist-dot"></div>Pods, teabags, coffee and sugar in the box under the Nespresso</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Extra blanket and pillow in the wardrobe</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Hair dryer in the bathroom cabinet</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>First aid kit in the small cupboard above the fridge</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Safe in the wardrobe — instructions on the inside panel</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Netflix ready to use — log in to the Asara Studio profile</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Small solar lights in cupboard for load shedding</div>
+      <div class="checklist-item"><div class="checklist-dot"></div>Spare plug adaptor in the iron cupboard</div>
+    </div>
+  </div>
+</div>
+
+<!-- WIFI -->
+<div class="screen" id="screen-wifi">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Unit 215</div>
+    <div class="screen-title">WiFi &<br>Essentials</div>
+  </div>
+  <div class="screen-content">
+    <div class="wifi-block">
+      <div class="wifi-label">Network</div>
+      <div class="wifi-value">#215 Asara Studio</div>
+      <div class="wifi-divider"></div>
+      <div class="wifi-label">Password</div>
+      <div class="wifi-value">10onV215</div>
+    </div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 6v2M12 16v2M6 12h2M16 12h2"/></svg></div><div class="entry-body"><div class="entry-name">The Safe</div><div class="entry-desc">Press reset · enter 3–8 digit code · press E · turn knob within 5 seconds</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div><div class="entry-body"><div class="entry-name">Lockbox</div><div class="entry-desc">Code: 0215 · After use: close box · scramble code · close flap</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.42-1.42a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div class="entry-body"><div class="entry-name">Your Host · Grizelda</div><div class="entry-desc">Message via Airbnb or Booking.com</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 18h.01"/></svg></div><div class="entry-body"><div class="entry-name">Parking</div><div class="entry-desc">No dedicated parking is available with the apartment. Street parking only — metered parking on surrounding streets.</div><div class="link-row"><a class="web-link" href="https://www.parkopedia.co.za/parking/locations/10_vredenburg_lane_cape_town_western_cape_8001_south_africa_baffk3vngpc6ry8343/?country=za&arriving=202606251600&leaving=202606251800" target="_blank"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg>Find Parking Nearby</a></div></div></div>
+  </div>
+</div>
+
+<!-- THE BUILDING -->
+<div class="screen" id="screen-building">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">TENonV Apartments</div>
+    <div class="screen-title">The Building</div>
+  </div>
+  <div class="screen-content">
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M12 3v1M12 20v1M3 12h1M20 12h1M5.6 5.6l.7.7M17.7 17.7l.7.7M5.6 18.4l.7-.7M17.7 6.3l.7-.7"/><circle cx="12" cy="12" r="4"/></svg></div><div class="entry-body"><div class="entry-name">Rooftop Pool & Sun Deck</div><div class="entry-desc">Levels 9 & 10. Table Mountain and Lion's Head views. Green and white loungers, open sky. Accessible by lift at any time — remember your key tag.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M7 7h.01M11 7h2"/></svg></div><div class="entry-body"><div class="entry-name">Laundry · Level 1</div><div class="entry-desc">Washing machines and dryers. Tap-to-pay. Instructions displayed in the room.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="entry-body"><div class="entry-name">24-Hour Security</div><div class="entry-desc">Security at the building entrance at all times. Key tag required for the lifts.</div></div></div>
+  </div>
+</div>
+
+<!-- HOUSE RULES -->
+<div class="screen" id="screen-rules">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">The Apartment</div>
+    <div class="screen-title">House Rules</div>
+  </div>
+  <div class="screen-content">
+    <p style="font-size:13px;color:#888;margin-bottom:20px;">Please read before your stay.</p>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/></svg></div><div class="entry-body"><div class="entry-name">No Smoking</div><div class="entry-desc">No smoking, vaping or e-cigarettes anywhere in the apartment, on the balcony or in shared building areas.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/></svg></div><div class="entry-body"><div class="entry-name">No Events or Parties</div><div class="entry-desc">Please respect your neighbours and the building at all times.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/></svg></div><div class="entry-body"><div class="entry-name">No Pets</div><div class="entry-desc">Pets are not permitted in the apartment.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg></div><div class="entry-body"><div class="entry-name">Quiet Hours</div><div class="entry-desc">Please keep noise to a minimum between 23:00 and 07:00.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="entry-body"><div class="entry-name">Max 2 Guests</div><div class="entry-desc">The apartment is registered for a maximum of 2 guests.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg></div><div class="entry-body"><div class="entry-name">Damages</div><div class="entry-desc">Please report any breakages promptly. Damages beyond normal wear may result in a formal claim.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div><div class="entry-body"><div class="entry-name">Lost Keys</div><div class="entry-desc">Lost access tags, keys or remotes may incur a replacement fee.</div></div></div>
+    <div class="entry"><div class="entry-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/></svg></div><div class="entry-body"><div class="entry-name">Illegal Activities</div><div class="entry-desc">Strictly prohibited. Guests in violation may be removed from the building.</div></div></div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="screen" id="screen-explore">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Explore</div>
+    <div class="screen-title">Cape Town</div>
+  </div>
+  <div class="screen-content">
+    <div class="section-sub">On your doorstep — all walkable</div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M12 22V12M12 12C12 7 7 4 2 5M12 12C12 7 17 4 22 5"/></svg></div><div class="entry-body"><div class="entry-name">Company's Garden <span class="pill">1 min</span></div><div class="entry-desc">South Africa's oldest garden. Ancient oaks and quiet — right at your door.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Company's+Garden+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 10V21M19 10V21M12 3L2 10h20L12 3z"/></svg></div><div class="entry-body"><div class="entry-name">SA Museum & Planetarium <span class="pill">2 min</span></div><div class="entry-desc">Natural history, whale skeletons, rock art. Better than it sounds.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Iziko+South+African+Museum" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.iziko.org.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg></div><div class="entry-body"><div class="entry-name">National Gallery <span class="pill">3 min</span></div><div class="entry-desc">One of Africa's leading art museums. Free entry.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=South+African+National+Gallery+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-6 7 6v12M10 21V15h4v6"/></svg></div><div class="entry-body"><div class="entry-name">Bo-Kaap <span class="pill">10 min</span></div><div class="entry-desc">Painted houses, cobbled streets, Cape Malay history. Go in the morning.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Bo-Kaap+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="entry-body"><div class="entry-name">Kloof Street <span class="pill">7 min</span></div><div class="entry-desc">Where Cape Town eats, drinks and lingers.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Kloof+Street+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="rule"></div>
+    <div class="section-sub">A short Uber away — not walkable</div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 17l4-8 5 5 3-3 4 6H3z"/></svg></div><div class="entry-body"><div class="entry-name">Table Mountain <span class="pill"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Uber · 10 min</span></div><div class="entry-desc">Cable car closes in cloud and wind — check conditions before you go.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Table+Mountain+Aerial+Cableway" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.tablemountain.net" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Check Conditions</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div class="entry-body"><div class="entry-name">V&A Waterfront <span class="pill"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Uber · 10 min</span></div><div class="entry-desc">Harbour, restaurants, shopping. Good for a first evening.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=V%26A+Waterfront+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M2 12c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0M2 17c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0"/></svg></div><div class="entry-body"><div class="entry-name">Camps Bay <span class="pill"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Uber · 15 min</span></div><div class="entry-desc">The Atlantic at its most spectacular. Go for sunset. Swim if you're brave.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Camps+Bay+Beach+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 17l2-7h14l2 7M3 17c0 1.5 1 2.5 2.5 2.5h13c1.5 0 2.5-1 2.5-2.5M12 10V5M9 7h6M7 13h10"/></svg></div><div class="entry-body"><div class="entry-name">Robben Island <span class="pill"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>20 min + ferry</span></div><div class="entry-desc">Where Mandela was imprisoned. Book ahead — the ferry sells out.</div><div class="link-row"><a class="web-link" href="https://www.robben-island.org.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Book Tickets</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M8 22h8M12 11v11M5 2h14l-2 9a5 5 0 01-10 0L5 2z"/></svg></div><div class="entry-body"><div class="entry-name">Cape Winelands <span class="pill"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Uber · 45 min</span></div><div class="entry-desc">Stellenbosch, Franschhoek. World-class wine country. Worth a full day.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Stellenbosch+Wine+Route" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+  </div>
+</div>
+
+<!-- EAT & DRINK -->
+<div class="screen" id="screen-eat">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Cape Town</div>
+    <div class="screen-title">Eat & Drink</div>
+  </div>
+  <div class="screen-content">
+    <p style="font-size:12px;color:#aaa;margin-bottom:20px;">All walkable or a short Uber.</p>
+    <div class="food-category">
+      <div class="food-cat-title">Coffee</div>
+      <div class="food-item">Yours Truly · Kloof St — buzzy, great sandwiches<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Yours+Truly+Kloof+Street+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Truth Coffee Roasting · Buitenkant St — world-famous roastery<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Truth+Coffee+Roasting+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.truthcoffee.com" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div>
+      <div class="food-item">Rosetta Roastery · Bree St — award-winning specialty coffee<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Rosetta+Roastery+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+    </div>
+    <div class="food-category">
+      <div class="food-cat-title">Breakfast</div>
+      <div class="food-item">Kleinskys Deli · Kloof St — proper deli breakfast<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Kleinskys+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Butter · Loop St — local crowd, great breakfast burger<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Butter+Restaurant+Loop+Street+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Honest Chocolate Café · Wale St — coffee, chocolate, courtyard<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Honest+Chocolate+Cafe+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.honestchocolate.co.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div>
+    </div>
+    <div class="food-category">
+      <div class="food-cat-title">Casual Dining</div>
+      <div class="food-item">Hudsons — burgers, Cape Town institution<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Hudsons+The+Burger+Joint+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Pizza Shed — simple, neighbourhood favourite<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Pizza+Shed+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Mamasita's — Mexican, unpretentious and very good<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Mamasitas+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">La Parada — tapas, lively, generous plates<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=La+Parada+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.laparada.co.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div>
+    </div>
+    <div class="food-category">
+      <div class="food-cat-title">Dinner</div>
+      <div class="food-item">Thali — refined South Asian, beautiful room<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Thali+Restaurant+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.thali.co.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div>
+      <div class="food-item">Grub & Vine — relaxed fine dining, great wine list<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Grub+and+Vine+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.grubandvine.co.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div>
+      <div class="food-item">Between Us — intimate, seasonal, one of the city's best<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Between+Us+Restaurant+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">The Shortmarket Club — refined, consistently one of the city's best<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=The+Shortmarket+Club+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a><a class="web-link" href="https://www.shortmarketclub.com" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Website</a></div></div>
+    </div>
+    <div class="food-category">
+      <div class="food-cat-title">Rooftops & Sundowners</div>
+      <div class="food-item">Gigi Rooftop · St George's Mall — city views, cocktails. Book ahead.<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Gigi+Rooftop+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Rooftop on Bree · Bree St — mountain views, great sundowner spot<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Rooftop+on+Bree+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">14 Stories · Buitengracht St — panoramic views, good happy hour<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=14+Stories+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Athletic Club & Social · Loop St — three levels, late night energy<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Athletic+Club+and+Social+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+      <div class="food-item">Camps Bay Strip · 15 min Uber — watch the mountain turn gold at sunset<div class="link-row" style="margin-top:6px;"><a class="map-link" href="https://maps.google.com/?q=Camps+Bay+Strip+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHOPPING -->
+<div class="screen" id="screen-shopping">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Cape Town</div>
+    <div class="screen-title">Shopping &<br>Essentials</div>
+  </div>
+  <div class="screen-content">
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg></div><div class="entry-body"><div class="entry-name">24-Hour Spar & Liquor Store <span class="pill">5 min</span></div><div class="entry-desc">Groceries, wine, basics. Open around the clock.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Spar+Gardens+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg></div><div class="entry-body"><div class="entry-name">Lifestyle on Kloof <span class="pill">7 min</span></div><div class="entry-desc">Woolworths Food · Starbucks · Kauai · Pharmacy · Sorbet · Clothing · Wellness Centre</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Lifestyle+on+Kloof+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div><div class="entry-body"><div class="entry-name">Kloof Street Pharmacy</div><div class="entry-desc">At Lifestyle on Kloof · 021 276 2310</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=Kloof+Street+Pharmacy+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg></div><div class="entry-body"><div class="entry-name">V&A Waterfront <span class="pill"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Uber · 10 min</span></div><div class="entry-desc">Full shopping mall, supermarket and most major retailers.</div><div class="link-row"><a class="map-link" href="https://maps.google.com/?q=V%26A+Waterfront+Cape+Town" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Maps</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="entry-body"><div class="entry-name">ATM</div><div class="entry-desc">Multiple ATMs at Lifestyle on Kloof and the V&A Waterfront.</div></div></div>
+  </div>
+</div>
+
+<!-- GOOD TO KNOW -->
+<div class="screen" id="screen-goodtoknow">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Cape Town</div>
+    <div class="screen-title">Good to Know</div>
+  </div>
+  <div class="screen-content">
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg></div><div class="entry-body"><div class="entry-name">Personal Safety</div><div class="entry-desc">Keep bags in front of you on busy streets. Don't leave anything visible in a car. Use Uber after dark rather than walking alone. Just a few habits worth having.</div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-4.9-6H7a4 4 0 00-4 4z"/></svg></div><div class="entry-body"><div class="entry-name">Weather</div><div class="entry-desc">Pack a layer even in summer — the southeaster picks up in the afternoon. Check the forecast before outdoor plans.</div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M3 17l4-8 5 5 3-3 4 6H3z"/></svg></div><div class="entry-body"><div class="entry-name">Table Mountain</div><div class="entry-desc">Cable car closes in cloud and wind, sometimes without warning. Check conditions before making the trip.</div><div class="link-row"><a class="web-link" href="https://www.tablemountain.net" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>Check Conditions</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div class="entry-body"><div class="entry-name">Load Shedding</div><div class="entry-desc">SA has scheduled power outages. The building has backup power for lifts and common areas. Solar lights in cupboard. Check your schedule on EskomSePush.</div><div class="link-row"><a class="web-link" href="https://eskomsepush.app" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>EskomSePush App</a></div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div><div class="entry-body"><div class="entry-name">Water & Electricity</div><div class="entry-desc">Tap water is safe and excellent. Type M plugs — three large round pins, 230V. Spare adaptor in the iron cupboard.</div></div></div>
+    <div class="entry"><div class="entry-icon entry-icon-linen"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="entry-body"><div class="entry-name">Tipping</div><div class="entry-desc">10–15% at restaurants. R5–R20 for parking attendants. Always appreciated.</div></div></div>
+  </div>
+</div>
+
+<!-- EMERGENCY -->
+<div class="screen" id="screen-emergency">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Asara Studio</div>
+    <div class="screen-title">Emergency<br>Contacts</div>
+  </div>
+  <div class="screen-content">
+    <div class="host-block">
+      <div class="host-block-title">Your Host · Grizelda</div>
+      <div class="host-block-sub">Message via Airbnb or Booking.com for all queries and assistance.</div>
+    </div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:16px;line-height:1.6;">International guests: dial +27 and drop the leading 0 from the local number.</p>
+    <div class="contacts-row"><div class="contacts-name">Emergency Services</div><div class="contacts-num">112</div></div>
+    <div class="contacts-row"><div class="contacts-name">SA Police</div><div class="contacts-num">+27 10 111</div></div>
+    <div class="contacts-row"><div class="contacts-name">Cape Town SAPS</div><div class="contacts-num">+27 21 467 8078</div></div>
+    <div class="contacts-row"><div class="contacts-name">Mediclinic Cape Town</div><div class="contacts-num">+27 86 122 4466</div></div>
+    <div class="contacts-row"><div class="contacts-name">CBD Healthcare</div><div class="contacts-num">+27 73 068 0899</div></div>
+    <div class="contacts-row"><div class="contacts-name">Fire Brigade</div><div class="contacts-num">+27 21 444 8963</div></div>
+    <div class="contacts-row"><div class="contacts-name">Kloof St Pharmacy</div><div class="contacts-num">+27 21 276 2310</div></div>
+    <p style="font-size:11px;color:#aaa;margin-top:16px;">Mediclinic Cape Town · 21 Hof St, Gardens</p>
+  </div>
+</div>
+
+<!-- LEAVE A REVIEW -->
+<div class="screen" id="screen-review">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+    <div class="screen-eyebrow">Asara Studio</div>
+    <div class="screen-title">Leave a Review</div>
+  </div>
+  <div class="screen-content">
+    <p style="font-size:13px;font-weight:300;color:#555;line-height:1.75;margin-bottom:12px;">One small favour — if you enjoyed your stay, we'd be so grateful if you could leave us a review. On short-term rental platforms, ratings work differently to hotels. Anything below 5 stars can negatively affect a listing, even if your stay was great.</p>
+    <p style="font-size:13px;font-weight:300;color:#555;line-height:1.75;margin-bottom:20px;">If something wasn't right, please message us first — we'd love the chance to make it right.</p>
+    <div class="rule"></div>
+    <div class="star-row"><div class="stars"><span class="star-filled">★★★★★</span></div><div class="star-desc">Everything was great — had a wonderful stay</div></div>
+    <div class="star-row"><div class="stars"><span class="star-filled">★★★★</span><span class="star-empty">★</span></div><div class="star-desc">Good stay, a few things could be improved</div></div>
+    <div class="star-row"><div class="stars"><span class="star-filled">★★★</span><span class="star-empty">★★</span></div><div class="star-desc">Issues that weren't resolved during the stay</div></div>
+    <div class="rule"></div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:16px;line-height:1.6;">Tap below to go to our listing page. You may need to log in to your account to leave a review after checkout.</p>
+    <a class="review-link" href="https://airbnb.co.za/h/asara215" target="_blank">Review us on Airbnb →</a>
+    <a class="review-link" href="https://www.booking.com/Pulse-Za5uWw" target="_blank">Review us on Booking.com →</a>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function toggleMenu() {
+  const menu = document.getElementById('sidemenu');
+  const overlay = document.getElementById('menuOverlay');
+  const btn = document.getElementById('menuBtn');
+  menu.classList.toggle('open');
+  overlay.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+</script>
+</body>
+</html>
